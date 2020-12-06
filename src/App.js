@@ -1,23 +1,35 @@
 import React from 'react';
-import ContactsList from './ContactsList';
-import contact from './contacts.json';
+import ContactsList from './components/Contact/';
 import { v4 as uniqueId } from 'uuid';
-import Filter from './Filter';
+import ContactForm from './components/Form/';
+import Filter from './components/Filter/';
+
+const contacTest = [
+  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+];
+
 class App extends React.Component {
   state = {
-    contacts: contact,
-    name: '',
-    number: '',
+    contacts: contacTest,
     filter: '',
   };
   addContact = (name, number) => {
-    const contact = {
+    const { contacts } = this.state;
+    const newContact = {
       id: uniqueId(),
       name,
       number,
     };
+    if (contacts.find(contact => contact.name === newContact.name)) {
+      alert(`${newContact.name} з таким імененем вже є.`);
+      return;
+    }
+
     this.setState(prevState => ({
-      contacts: [contact, ...prevState.contacts],
+      contacts: [newContact, ...prevState.contacts],
     }));
   };
 
@@ -26,66 +38,23 @@ class App extends React.Component {
       contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
-  // toggleCompleted = contactId => {
-  //   this.setStata(prevState => ({
-  //     contacts: prevState.contacts.mapcontacts(contact => {
-  //       if (contact.id === contactId) {
-  //         return { ...contact, contacts: !contact.contacts };
-  //       }
-  //       return contact;
-  //     }),
-  //   }));
-  // };
-  handleChange = event => {
-    const { name, value } = event.currentTarget;
-    this.setState({ [name]: value });
-  };
-  handleSubmit = event => {
-    event.preventDefault();
-    const { name, number } = this.state;
-    this.addContact(name, number);
-    this.reset();
-  };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
-  };
   changeFilter = event => {
     this.setState({ filter: event.currentTarget.value });
   };
 
   render() {
-    const { name, number, filter } = this.state;
-    const norm = this.state.filter.toLowerCase();
+    const { filter } = this.state;
+    const normalize = this.state.filter.toLowerCase();
     const visibleContacts = this.state.contacts.filter(contact =>
-      contact.name.toLowerCase().includes(norm),
+      contact.name.toLowerCase().includes(normalize),
     );
 
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Ім’я
-            <input
-              type="text"
-              name="name"
-              value={this.state.name}
-              onChange={this.handleChange}
-            />
-          </label>
-          <label>
-            Телефон
-            <input
-              type="text"
-              name="number"
-              value={this.state.number}
-              onChange={this.handleChange}
-            />
-          </label>
-          <button type="submit" disabled={name === '' || number === ''}>
-            Зберегти
-          </button>
-        </form>
+        <h1>Phonebook</h1>
+        <ContactForm onSubmit={this.addContact} />
+        <h2>Contacts</h2>
         <Filter value={filter} onChangle={this.changeFilter} />
         <ContactsList
           contacts={visibleContacts}

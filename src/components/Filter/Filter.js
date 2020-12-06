@@ -1,6 +1,6 @@
 const Filter = ({ value, onChangle }) => (
   <label>
-    Пошук Імені
+    Пошук контактів
     <input type="text" value={value} onChange={onChangle} />
   </label>
 );
