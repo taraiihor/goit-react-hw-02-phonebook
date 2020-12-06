@@ -55,7 +55,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { filter } = this.state;
+    const { name, number, filter } = this.state;
     const norm = this.state.filter.toLowerCase();
     const visibleContacts = this.state.contacts.filter(contact =>
       contact.name.toLowerCase().includes(norm),
@@ -82,7 +82,9 @@ class App extends React.Component {
               onChange={this.handleChange}
             />
           </label>
-          <button type="submit">Зберегти</button>
+          <button type="submit" disabled={name === '' || number === ''}>
+            Зберегти
+          </button>
         </form>
         <Filter value={filter} onChangle={this.changeFilter} />
         <ContactsList
