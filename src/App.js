@@ -24,7 +24,7 @@ class App extends React.Component {
       number,
     };
     if (contacts.find(contact => contact.name === newContact.name)) {
-      alert(`${newContact.name} з таким імененем вже є.`);
+      alert(`${newContact.name} з таким ім’ям вже є.`);
       return;
     }
 
