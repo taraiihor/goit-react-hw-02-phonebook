@@ -2,11 +2,13 @@ import React from 'react';
 import ContactsList from './ContactsList';
 import contact from './contacts.json';
 import { v4 as uniqueId } from 'uuid';
+import Filter from './Filter';
 class App extends React.Component {
   state = {
     contacts: contact,
     name: '',
     number: '',
+    filter: '',
   };
   addContact = (name, number) => {
     const contact = {
@@ -48,8 +50,17 @@ class App extends React.Component {
   reset = () => {
     this.setState({ name: '', number: '' });
   };
+  changeFilter = event => {
+    this.setState({ filter: event.currentTarget.value });
+  };
+
   render() {
-    const { contacts } = this.state;
+    const { filter } = this.state;
+    const norm = this.state.filter.toLowerCase();
+    const visibleContacts = this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(norm),
+    );
+
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -73,8 +84,9 @@ class App extends React.Component {
           </label>
           <button type="submit">Зберегти</button>
         </form>
+        <Filter value={filter} onChangle={this.changeFilter} />
         <ContactsList
-          contacts={contacts}
+          contacts={visibleContacts}
           onDeleteContact={this.deleteContact}
         />
       </div>
