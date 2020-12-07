@@ -3,7 +3,7 @@ import ContactsList from './components/Contact/';
 import { v4 as uniqueId } from 'uuid';
 import ContactForm from './components/Form/';
 import Filter from './components/Filter/';
-
+import './App.css';
 const contacTest = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
   { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
@@ -51,7 +51,7 @@ class App extends React.Component {
     );
 
     return (
-      <div>
+      <div className="Containet">
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.addContact} />
         <h2>Contacts</h2>
